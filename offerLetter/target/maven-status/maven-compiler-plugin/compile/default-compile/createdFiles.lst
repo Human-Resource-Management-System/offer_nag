@@ -1,0 +1,4 @@
+com\nkxgen\spring\orm\dao\CandidateDAOImpl.class
+com\nkxgen\spring\orm\model\Candidate.class
+com\nkxgen\spring\orm\dao\CandidateDAO.class
+com\nkxgen\spring\controller\CandidateController.class
