@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.nkxgen.spring.orm.model.Candidate;
 import com.nkxgen.spring.orm.model.Employee;
-import com.nkxgen.spring.orm.model.Eofr;
+import com.nkxgen.spring.orm.model.EmploymentOfferDocument;
+import com.nkxgen.spring.orm.model.EmploymentOfferdocComposite;
+import com.nkxgen.spring.orm.model.HrmsEmploymentOffer;
 import com.nkxgen.spring.orm.model.OfferModel;
 
 public interface CandidateDAO {
@@ -12,16 +14,19 @@ public interface CandidateDAO {
 
 	Candidate getCandidateById(int employeeId);
 
-	Long getLatestEofrIdFromDatabase();
+	int getLatestEofrIdFromDatabase();
 
-	void insertEofrInto(Eofr eofr);
+	void insertEofrInto(HrmsEmploymentOffer eofr);
 
 	Employee getHrById(int hR_id);
 
 	List<String> getAllDocuments();
 
-	void updateEmploymentOfferDocuments(Eofr eofr, OfferModel offerModel);
-
 	void updateCandidateStatus(String cand_status, String newValue);
+
+	List<Candidate> findAllProvidedCandidates();
+
+	void updateEmploymentOfferDocuments(HrmsEmploymentOffer employmentOfferModel, OfferModel of,
+			EmploymentOfferdocComposite empoffdocComposite, EmploymentOfferDocument employmentofferdocument);
 
 }

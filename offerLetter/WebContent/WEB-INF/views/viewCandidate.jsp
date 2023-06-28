@@ -88,11 +88,18 @@
            <%  Employee hr = (Employee)request.getAttribute("hr"); %> 
            <%  List <String> listOfDocuments =(List<String>) request.getAttribute("listOfDocuments"); %> 
 
+
+ <div class="form-group">
+    <label for="candidate-name">Candidate Name:</label>
+<input type="hidden" id="candidateId" name="candidateId" value="<%= candidate.getCand_id() %>" readonly>
+  </div>
+  
+
    <div class="form-group">
     <label for="candidate-name">Candidate Name:</label>
 <input type="text" id="candidateName" name="candidateName" value="<%= candidate.getCand_firstname() + candidate.getCand_lastname() %>" readonly>
   </div>
-  
+  <%System.out.println( candidate.getCand_firstname() ); %>
 <div class="form-group">
     <label for="hr-mobile">Admin Mobile:</label>
     <input type="text" id="adminMobile" name="adminMobile" value="<%= hr.getEmpl_mobile()%>" readonly>

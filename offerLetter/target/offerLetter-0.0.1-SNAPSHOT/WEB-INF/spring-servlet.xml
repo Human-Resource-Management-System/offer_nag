@@ -13,9 +13,11 @@
                            http://www.springframework.org/schema/tx
                            http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+   <!-- Controller Configuration -->
     <mvc:annotation-driven />
-    <context:component-scan base-package="controllers" />
+    <context:component-scan base-package="com" />
 
+    <!-- View Configuration -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/views/" />
@@ -34,34 +36,40 @@
     <bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="properties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
-                <!-- Additional Hibernate properties can be added here -->
             </props>
         </property>
     </bean>
 
-    <!-- SessionFactory configuration -->
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+    <!-- EntityManagerFactory configuration -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="models" />
-        <property name="hibernateProperties" ref="hibernateProperties" />
+        <property name="packagesToScan" value="com.nkxgen.spring.orm.model" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="databasePlatform" value="org.hibernate.dialect.PostgreSQLDialect" />
+                <property name="showSql" value="true" />
+            </bean>
+        </property>
+        <property name="jpaProperties" ref="hibernateProperties" />
     </bean>
-  
-    <!-- Define the HolidayDAO bean -->
-    <bean id="holidayDAO" class="DAO.HolidayDAOImpl" />
-     <bean id="candidateDAO" class="DAO.CandidateDAOImpl" />
-    
 
+    <!-- Dependency Injection Configuration -->
+    <bean id="cd" class="com.nkxgen.spring.orm.dao.CandidateDAOImpl" />
+   
+    
+    <!-- EntityManager configuration -->
+    <bean id="entityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
 
     <!-- Enable transactional support -->
     <tx:annotation-driven transaction-manager="transactionManager" />
 
-    <!-- Configure the Hibernate transaction manager -->
-    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory" />
+    <!-- Configure the JPA transaction manager -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
 
 </beans>
-
-

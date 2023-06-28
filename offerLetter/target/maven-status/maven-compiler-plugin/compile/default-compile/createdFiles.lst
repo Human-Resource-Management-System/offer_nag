@@ -1,4 +1,13 @@
+com\nkxgen\spring\orm\model\OfferModel.class
+com\nkxgen\spring\orm\model\EmploymentOfferDocument.class
+com\nkxgen\spring\orm\service\offerlettermail$2.class
+com\nkxgen\spring\orm\model\EmploymentOfferdocComposite.class
+com\nkxgen\spring\orm\model\Employee.class
+com\nkxgen\spring\orm\model\HrmsEmploymentOffer.class
 com\nkxgen\spring\orm\dao\CandidateDAOImpl.class
+com\nkxgen\spring\orm\service\offerlettermail.class
 com\nkxgen\spring\orm\model\Candidate.class
+com\nkxgen\spring\controller\Offerlettercontroller.class
+com\nkxgen\spring\orm\service\offerlettermail$1.class
 com\nkxgen\spring\orm\dao\CandidateDAO.class
-com\nkxgen\spring\controller\CandidateController.class
+com\nkxgen\spring\orm\model\InductionDocumentTypes.class

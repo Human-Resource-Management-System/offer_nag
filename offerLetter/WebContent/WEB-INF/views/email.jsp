@@ -42,6 +42,56 @@
             font-size: 16px;
             border-radius: 4px;
         }
+               
+ .popup{
+	width:400px;
+	background:#fff;
+	border-radius:6px;
+	position:absolute;
+	top:0;
+	left:50%;
+	transform:translate(-50%,-50%) scale(0.1);
+	text-align:center;
+	padding:0 30px 30px;
+	color:#333;	
+	visibility: hidden;
+	transition:transform 0.4s,top 0.4s;
+}
+
+.open-popup{
+	visibility: visible;
+	top:50%;
+	transform:translate(-50%,-50%) scale(1);
+}
+
+.popup img{
+	width:100px;
+	margin-top:-50px;
+	border-radius:50%;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.popup h2{
+	font-size:38px;
+	font-weight:500;
+	margin:30px 0px 10px;
+	
+}
+
+.popup button{
+	width:100%;
+	margin-top:50px;
+	padding:10px 0;
+	background:#6fd649;
+	color:#fff;
+	border:0;
+	outline:none;
+	font-size:18px;
+	border-radius:4px;
+	cursor:pointer;
+	box-shadow:0 5px 5px rgba(0,0,0,0.2);
+}       
+        
     </style>
 </head>
 <body>
@@ -74,27 +124,45 @@
     <p>Offered Job: <%= offerModel.getOfferedJob() %></p>
     <p>Reporting Date: <%= offerModel.getReportingDate() %></p>
     <p>Documents to Bring While Coming:</p>
-    <ul>
+      <ul>
         <c:forEach var="document" items="${offerModel.getDocuments()}">
             <li>${document}</li>
         </c:forEach>
     </ul>
-    
-    
-    
-    
-  <div class="button-container">
+<div class="button-container">
     <form id="sendOfferForm" action="sendOfferLetter" method="post">
-
-        <button id="sendOfferButton" class="send-button" type="submit">Send Offer Letter via Email</button>
+        <button id="sendOfferButton" class="send-button" type="submit" onclick="openPopup(event)">Send Offer Letter via Email</button>
     </form>
 </div>
 
+<div class="popup" id="popup">
+    <img src="tick.png">
+    <h2>Thank You!</h2>
+    <p>Email has been successfully sent</p> 
+    <button type="button" onclick="closePopup()">OK</button>
+</div>
+
+<script>
+    let popup = document.getElementById("popup");
+
+    function openPopup(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Show the pop-up
+        popup.classList.add("open-popup");
+
+        // Submit the form after a delay of 1 second (adjust the delay if needed)
+        setTimeout(() => {
+            document.getElementById("sendOfferForm").submit();
+        }, 1000);
+    }
+
+    function closePopup() {
+        popup.classList.remove("open-popup");
+    }
+</script>
 
 
-
-    
-    
     
 </body>
 </html>
