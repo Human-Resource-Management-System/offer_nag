@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.nkxgen.spring.orm.dao.CandidateDAO;
 import com.nkxgen.spring.orm.model.Candidate;
 import com.nkxgen.spring.orm.model.Employee;
-import com.nkxgen.spring.orm.model.EmploymentOfferDocument;
-import com.nkxgen.spring.orm.model.EmploymentOfferdocComposite;
 import com.nkxgen.spring.orm.model.HrmsEmploymentOffer;
 import com.nkxgen.spring.orm.model.OfferModel;
 import com.nkxgen.spring.orm.service.offerlettermail;
@@ -96,10 +94,8 @@ public class Offerlettercontroller {
 	// insert the candidate data in emplomentOffers table , employmentOfferDocuments table and changing status of
 	// employee from NA to AC
 	@RequestMapping("/sendOfferLetter")
-
-	public void redirectedFromOfferLetter(HrmsEmploymentOffer eofr,
-			EmploymentOfferdocComposite employmentofferdocComposite, EmploymentOfferDocument employmentofferdocument,
-			Model model, HttpServletRequest request, HttpServletResponse response) {
+	public void redirectedFromOfferLetter(HrmsEmploymentOffer eofr, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
 		logger.info("Entering redirectedFromOfferLetter method");
 		logger.info(
 				"Received 3 models in parameters: EmploymentOfferdocComposite, EmploymentOfferDocument, and HrmsEmploymentOffer");
@@ -135,10 +131,12 @@ public class Offerlettercontroller {
 			e.printStackTrace();
 		}
 		logger.info("sent mail to the candidate");
+
+		cd.updateEmploymentOfferDocuments(eofr, of);
+		logger.info("inserting into  employmentofferdocuemnts table");
+
 		cd.insertEofrInto(eofr);
 		logger.info("inserting data into HrmsEmploymentOffer here by calling dao method");
-		cd.updateEmploymentOfferDocuments(eofr, of, employmentofferdocComposite, employmentofferdocument);
-		logger.info("inserting into  employmentofferdocuemnts table");
 
 		cd.updateCandidateStatus("cand_status", "AC");
 		logger.info("finally after all, now change candidate status from NA to AC");

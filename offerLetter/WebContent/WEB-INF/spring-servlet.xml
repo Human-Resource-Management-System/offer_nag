@@ -71,5 +71,9 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
+    
+    
+    <bean id="empoffdocComposite" class="com.nkxgen.spring.orm.model.EmploymentOfferdocComposite" scope="prototype"/>
+    <bean id="employmentofferdocument" class="com.nkxgen.spring.orm.model.EmploymentOfferDocument" scope="prototype"/>
 
 </beans>

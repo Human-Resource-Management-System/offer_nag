@@ -8,7 +8,12 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class EmploymentOfferdocComposite implements Serializable {
 
-	@Column(name = "eofd_id", insertable = false, updatable = false)
+	@Override
+	public String toString() {
+		return "EmploymentOfferdocComposite [offerid=" + offerid + ", documentIndex=" + documentIndex + "]";
+	}
+
+	@Column(name = "eofd_id")
 	private int offerid;
 
 	@Column(name = "eofd_docindex")

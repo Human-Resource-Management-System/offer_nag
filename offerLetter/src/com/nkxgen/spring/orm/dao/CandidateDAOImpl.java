@@ -8,10 +8,11 @@ import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nkxgen.spring.controller.Offerlettercontroller;
 import com.nkxgen.spring.orm.model.Candidate;
 import com.nkxgen.spring.orm.model.Employee;
 import com.nkxgen.spring.orm.model.EmploymentOfferDocument;
@@ -22,11 +23,14 @@ import com.nkxgen.spring.orm.model.OfferModel;
 
 @Repository
 public class CandidateDAOImpl implements CandidateDAO {
-	private final Logger logger = LoggerFactory.getLogger(Offerlettercontroller.class);
+	private final Logger logger = LoggerFactory.getLogger(CandidateDAOImpl.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
 	Candidate cann;
+
+	@Autowired
+	ApplicationContext context;
 
 	// get all the candidates list whom offer letter already provided
 	@Override
@@ -114,22 +118,15 @@ public class CandidateDAOImpl implements CandidateDAO {
 
 	@Override
 	@Transactional
-
-	public void updateEmploymentOfferDocuments(HrmsEmploymentOffer employmentOfferModel, OfferModel of,
-			EmploymentOfferdocComposite empoffdocComposite, EmploymentOfferDocument employmentofferdocument) {
-		logger.info("Update the employmentofferdocuments table with eofd_id, docindex, and IdtyId of the document");
-
-		logger.info(""); // Added line
+	public void updateEmploymentOfferDocuments(HrmsEmploymentOffer employmentOfferModel, OfferModel of) {
 
 		System.out.println("in here");
 		// getting eofrId
-		logger.info("Get all required models from HrmsEmploymentOffer to retrieve eofrId");
-
 		int eofrId = employmentOfferModel.getCandidateId();
 		// getting the list of documents should bring by candidate
 		List<String> documentsToBring = of.getDocuments();
+
 		System.out.println(documentsToBring);
-		logger.info(" get the docuemnts from  HrmsEmploymentOffer which was  the documents selected by hr");
 		// setting inductionDocumentTypes model from inductionDocumentTypes table
 		List<InductionDocumentTypes> inductionDocuments = getInductionDocuments();
 
@@ -138,24 +135,20 @@ public class CandidateDAOImpl implements CandidateDAO {
 		for (String document : documentsToBring) {
 			// getting IdtyId by the document name
 			int idtyId = findIdtyIdByTitle(inductionDocuments, document);
-			logger.info("Assigning eofrId: " + eofrId);
-
 			// these four steps is for assigning eofrId,docIndex,idtyId to the employmentofferdocuments entity model
-			empoffdocComposite.setOfferid(eofrId);
-			logger.info("Assigning docIndex: " + docIndex);
 
+			EmploymentOfferdocComposite empoffdocComposite = context.getBean(EmploymentOfferdocComposite.class);
+			EmploymentOfferDocument employmentofferdocument = context.getBean(EmploymentOfferDocument.class);
+
+			empoffdocComposite.setOfferid(eofrId);
 			empoffdocComposite.setDocumentIndex(docIndex);
 			employmentofferdocument.setEmpoff(empoffdocComposite);
-			logger.info("Assigning offeridentity: " + idtyId);
-
 			employmentofferdocument.setOfferidentity(idtyId);
 			// EmploymentOfferDocument documentModel = new EmploymentOfferDocument(empoffdocComposite, idtyId);
-			logger.info("Saving employmentofferdocument into the database");
 
+			System.out.println(employmentofferdocument);
 			// update the data into data base which got from entity model of employmentofferdocuments
-			saveEmploymentOfferDocument(employmentofferdocument);
-			logger.info("EmploymentOfferDocument saved successfully");
-
+			entityManager.persist(employmentofferdocument);
 			docIndex++;
 		}
 	}
@@ -166,15 +159,6 @@ public class CandidateDAOImpl implements CandidateDAO {
 		TypedQuery<InductionDocumentTypes> query = entityManager.createQuery("SELECT d FROM InductionDocumentTypes d",
 				InductionDocumentTypes.class);
 		return query.getResultList();
-	}
-
-	// persists into employmenofferdocuemnts table
-	@Transactional
-	private void saveEmploymentOfferDocument(EmploymentOfferDocument document) {
-		logger.info("Saving employment offer document into the database");
-		entityManager.persist(document);
-		logger.info("Employment offer document saved successfully");
-
 	}
 
 	// getting IdtyId by the document name

@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.nkxgen.spring.orm.model.Candidate;
 import com.nkxgen.spring.orm.model.Employee;
-import com.nkxgen.spring.orm.model.EmploymentOfferDocument;
-import com.nkxgen.spring.orm.model.EmploymentOfferdocComposite;
 import com.nkxgen.spring.orm.model.HrmsEmploymentOffer;
 import com.nkxgen.spring.orm.model.OfferModel;
 
@@ -26,7 +24,6 @@ public interface CandidateDAO {
 
 	List<Candidate> findAllProvidedCandidates();
 
-	void updateEmploymentOfferDocuments(HrmsEmploymentOffer employmentOfferModel, OfferModel of,
-			EmploymentOfferdocComposite empoffdocComposite, EmploymentOfferDocument employmentofferdocument);
+	void updateEmploymentOfferDocuments(HrmsEmploymentOffer employmentOfferModel, OfferModel of);
 
 }
